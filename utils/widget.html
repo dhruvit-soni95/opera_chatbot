@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Website Chatbot</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; background: #f9f9f9; }
+    #chatbox { height: 100vh; display: flex; flex-direction: column; }
+    #messages { flex: 1; overflow-y: auto; padding: 10px; }
+    .msg { margin: 8px 0; }
+    .user { text-align: right; color: #007bff; }
+    .bot { text-align: left; color: #333; }
+    #input-area { display: flex; padding: 10px; border-top: 1px solid #ddd; }
+    input { flex: 1; padding: 8px; }
+    button { padding: 8px 16px; margin-left: 5px; }
+  </style>
+</head>
+<body>
+  <div id="chatbox">
+    <div id="messages"></div>
+    <div id="input-area">
+      <input id="userInput" placeholder="Ask about the websiteee..." />
+      <button onclick="sendMsg()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    async function sendMsg() {
+      const input = document.getElementById("userInput");
+      const messages = document.getElementById("messages");
+      const text = input.value.trim();
+      if (!text) return;
+      messages.innerHTML += `<div class='msg user'>${text}</div>`;
+      input.value = "";
+
+      const res = await fetch("http://localhost:4000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text })
+      });
+
+      const data = await res.json();
+      messages.innerHTML += `<div class='msg bot'>${data.reply}</div>`;
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<script>
+(function(){
+  const iframe = document.createElement("iframe");
+  iframe.src = "https://your-chatbot-domain.com/widget";
+  Object.assign(iframe.style, {
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    width: "400px",
+    height: "600px",
+    border: "none",
+    borderRadius: "12px",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+    zIndex: "9999"
+  });
+  document.body.appendChild(iframe);
+})();
+</script>
