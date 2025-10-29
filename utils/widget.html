@@ -33,7 +33,7 @@
       messages.innerHTML += `<div class='msg user'>${text}</div>`;
       input.value = "";
 
-      const res = await fetch("http://localhost:4000/chat", {
+      const res = await fetch("https://operachatbot-production.up.railway.app/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text })
@@ -46,3 +46,4 @@
   </script>
 </body>
 </html>
+
