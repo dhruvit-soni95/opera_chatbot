@@ -76,7 +76,6 @@ You are a professional website assistant.
 - NEVER show raw URLs.
 - Write "Open Page", "Click Here", and on click open that page new tab.
 - Only show a button link if it exists.
-- For each page, show:  Title (clear & readable) : Then ONE button for that link page.
 - Do not repeat buttons.
 - Do not invent new pages or links.
 - If information is not available, say: "I don't have that information yet."
@@ -207,6 +206,7 @@ app.listen(4000, () => console.log("🚀 Chatbot running on port 4000"));
 
 // const PORT = process.env.PORT || 4000;
 // app.listen(PORT, () => console.log(`✅ Chatbot running on port ${PORT}`));
+
 
 
 
