@@ -74,7 +74,7 @@ You are a professional website assistant.
 
 ### RULES (Important)
 - NEVER show raw URLs.
-- NEVER write "Open Page", "Click Here", or show link text.
+- Write "Open Page", "Click Here", and on click open that page new tab.
 - Only show a button link if it exists.
 - For each page, show:
   - Title (clear & readable)
@@ -209,6 +209,7 @@ app.listen(4000, () => console.log("🚀 Chatbot running on port 4000"));
 
 // const PORT = process.env.PORT || 4000;
 // app.listen(PORT, () => console.log(`✅ Chatbot running on port ${PORT}`));
+
 
 
 
