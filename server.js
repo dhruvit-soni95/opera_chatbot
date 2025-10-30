@@ -29,39 +29,35 @@ app.get("/train", async (req, res) => {
 });
 
 // Chat endpoint
+// Chat endpoint
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
   const docs = await searchRelevantDocs(message, 3);
 
-  // const context = docs.map(d => `${d.title}: ${d.content.slice(0, 500)}`).join("\n\n");
   const context = docs.map(d => `
 ${d.title}
-${d.content.slice(0, 500)}
-Link: ${d.link}
+${d.content_chunk}
+Link: ${d.url}
 `).join("\n\n");
 
-
   const prompt = `
-You are a helpful assistant for the website. Answer questions only using the context below:
+You are a helpful assistant for the website. Use ONLY the context below:
 ${context}
+
 Question: ${message}
-Answer in a clear and friendly tone:
+
+Answer clearly and be helpful. If the context does not contain the answer, say:
+"I don't have that information yet."
 `;
 
-  // const completion = await client.chat.completions.create({
-  //   model: "gpt-4o-mini",
-  //   messages: [{ role: "user", content: prompt }]
-  // });
-  // res.json({ reply: completion.choices[0].message.content });
-const response = await client.chat({
-  model: "command-a-03-2025",
-  message: prompt,
+  const response = await client.chat({
+    model: "command-a-03-2025",
+    message: prompt,
+  });
+
+  res.json({ reply: response.text });
 });
-res.json({ reply: response.text });
 
-
-
-});
 
 // Widget page
 app.get("/widget", (req, res) => {
@@ -144,4 +140,5 @@ app.listen(4000, () => console.log("🚀 Chatbot running on port 4000"));
 
 // const PORT = process.env.PORT || 4000;
 // app.listen(PORT, () => console.log(`✅ Chatbot running on port ${PORT}`));
+
 
