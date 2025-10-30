@@ -75,7 +75,10 @@ You are a professional website assistant.
 ### RULES (Important)
 - NEVER show raw URLs.
 - NEVER write "Open Page", "Click Here", or show link text.
-- For every link, output ONLY a button using exactly this format:
+- Only show a button link if it exists.
+- For each page, show:
+  - Title (clear & readable)
+  - Then ONE button.
 - Do not repeat buttons.
 - Do not invent new pages or links.
 - If information is not available, say: "I don't have that information yet."
@@ -103,16 +106,24 @@ Respond cleanly and professionally:
     .replace(/Visit Page Visit Page/gi, "Visit Page")
     .replace(/\s+/g, " ");
 
-  // ✅ Convert any URL → Clean button format
-  reply = reply.replace(/https?:\/\/\S+/g, (url) =>
-    `<a href="${url}" target="_blank" style="display:inline-block;margin-top:8px;padding:8px 14px;background:#4f46e5;color:white;border-radius:6px;text-decoration:none;">Visit Page</a>`
-  );
+  // ✅ Convert URLs into button with correct page title
+  reply = reply.replace(/https?:\/\/\S+/g, (url) => {
+    const matched = docs.find(d => d.url === url || d.link === url);
+    const btnLabel = matched?.title?.trim() || "Visit Page";
+
+    return `
+<a href="${url}" target="_blank" style="display:inline-block;margin-top:8px;padding:8px 14px;background:#4f46e5;color:white;border-radius:6px;text-decoration:none;">
+Visit ${btnLabel}
+</a>
+`;
+  });
 
   // ✅ Remove duplicate buttons
   reply = [...new Set(reply.split("\n"))].join("\n");
 
   res.json({ reply });
 });
+
 
 
 
@@ -198,6 +209,7 @@ app.listen(4000, () => console.log("🚀 Chatbot running on port 4000"));
 
 // const PORT = process.env.PORT || 4000;
 // app.listen(PORT, () => console.log(`✅ Chatbot running on port ${PORT}`));
+
 
 
 
