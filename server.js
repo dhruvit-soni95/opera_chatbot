@@ -30,6 +30,35 @@ app.get("/train", async (req, res) => {
 
 // Chat endpoint
 // Chat endpoint
+// app.post("/chat", async (req, res) => {
+//   const { message } = req.body;
+//   const docs = await searchRelevantDocs(message, 3);
+
+//   const context = docs.map(d => `
+// ${d.title}
+// ${d.content_chunk}
+// Link: ${d.url}
+// `).join("\n\n");
+
+//   const prompt = `
+// You are a helpful assistant for the website. Use ONLY the context below:
+// ${context}
+
+// Question: ${message}
+
+// Answer clearly and be helpful. If the context does not contain the answer, say:
+// "I don't have that information yet."
+// `;
+
+//   const response = await client.chat({
+//     model: "command-a-03-2025",
+//     message: prompt,
+//   });
+
+//   res.json({ reply: response.text });
+// });
+
+
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
   const docs = await searchRelevantDocs(message, 3);
@@ -37,17 +66,25 @@ app.post("/chat", async (req, res) => {
   const context = docs.map(d => `
 ${d.title}
 ${d.content_chunk}
-Link: ${d.url}
+URL: ${d.url}
 `).join("\n\n");
 
   const prompt = `
-You are a helpful assistant for the website. Use ONLY the context below:
+You are a professional website assistant. Your job is to give helpful, concise answers.
+
+Follow these rules:
+- **Use simple, friendly language**
+- **If you reference a page, include a clickable button link**
+- Format button like this (VERY IMPORTANT):
+  <a href="URL_HERE" target="_blank" style="display:inline-block;margin-top:8px;padding:8px 14px;background:#4f46e5;color:white;border-radius:6px;text-decoration:none;">Visit Page</a>
+- Do NOT invent information. If the answer is not in the context say: "I don't have that information yet."
+
+CONTEXT:
 ${context}
 
-Question: ${message}
+USER QUESTION: ${message}
 
-Answer clearly and be helpful. If the context does not contain the answer, say:
-"I don't have that information yet."
+Now answer professionally:
 `;
 
   const response = await client.chat({
@@ -140,5 +177,6 @@ app.listen(4000, () => console.log("🚀 Chatbot running on port 4000"));
 
 // const PORT = process.env.PORT || 4000;
 // app.listen(PORT, () => console.log(`✅ Chatbot running on port ${PORT}`));
+
 
 
