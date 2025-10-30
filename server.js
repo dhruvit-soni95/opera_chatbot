@@ -76,9 +76,6 @@ You are a professional website assistant.
 - NEVER show raw URLs.
 - NEVER write "Open Page", "Click Here", or show link text.
 - For every link, output ONLY a button using exactly this format:
-
-ex."<a href="URL_HERE" target="_blank" style="display:inline-block;margin-top:8px;padding:8px 14px;background:#4f46e5;color:white;border-radius:6px;text-decoration:none;">Visit Page</a>"
-
 - Do not repeat buttons.
 - Do not invent new pages or links.
 - If information is not available, say: "I don't have that information yet."
@@ -201,6 +198,7 @@ app.listen(4000, () => console.log("🚀 Chatbot running on port 4000"));
 
 // const PORT = process.env.PORT || 4000;
 // app.listen(PORT, () => console.log(`✅ Chatbot running on port ${PORT}`));
+
 
 
 
