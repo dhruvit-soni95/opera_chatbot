@@ -66,25 +66,29 @@ app.post("/chat", async (req, res) => {
   const context = docs.map(d => `
 ${d.title}
 ${d.content_chunk}
-URL: ${d.url}
+LINK: ${d.url}
 `).join("\n\n");
 
   const prompt = `
 You are a professional website assistant. Your job is to give helpful, concise answers.
 
-Follow these rules:
-- **Use simple, friendly language**
-- **If you reference a page, include a clickable button link**
-- Format button like this (VERY IMPORTANT):
-  <a href="URL_HERE" target="_blank" style="display:inline-block;margin-top:8px;padding:8px 14px;background:#4f46e5;color:white;border-radius:6px;text-decoration:none;">Visit Page</a>
-- Do NOT invent information. If the answer is not in the context say: "I don't have that information yet."
+### Formatting Rules:
+- Use simple and friendly language.
+- If you reference a page, **DO NOT show the raw URL**.
+- Always convert any link to a **button** using this exact format:
 
-CONTEXT:
+<a href="URL_HERE" target="_blank" style="display:inline-block;margin-top:8px;padding:8px 14px;background:#4f46e5;color:white;border-radius:6px;text-decoration:none;">Visit Page</a>
+
+- Never show URLs as plain text.
+- If information is missing from context, reply: "I don't have that information yet."
+
+### CONTEXT:
 ${context}
 
-USER QUESTION: ${message}
+### USER QUESTION:
+${message}
 
-Now answer professionally:
+Now respond cleanly:
 `;
 
   const response = await client.chat({
@@ -92,8 +96,19 @@ Now answer professionally:
     message: prompt,
   });
 
-  res.json({ reply: response.text });
+  let reply = response.text;
+
+  // ✅ Auto-replace any plain URLs with a clean Visit Page button
+  reply = reply.replace(/https?:\/\/\S+/g, (url) =>
+    `<a href="${url}" target="_blank" style="display:inline-block;margin-top:8px;padding:8px 14px;background:#4f46e5;color:white;border-radius:6px;text-decoration:none;">Visit Page</a>`
+  );
+
+  // ✅ Optional cleanup: remove trailing weird "URL:" text if still present
+  reply = reply.replace(/URL:/g, "").replace(/\t/g, "");
+
+  res.json({ reply });
 });
+
 
 
 // Widget page
@@ -177,6 +192,7 @@ app.listen(4000, () => console.log("🚀 Chatbot running on port 4000"));
 
 // const PORT = process.env.PORT || 4000;
 // app.listen(PORT, () => console.log(`✅ Chatbot running on port ${PORT}`));
+
 
 
 
