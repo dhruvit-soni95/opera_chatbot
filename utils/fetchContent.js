@@ -87,10 +87,11 @@ import axios from "axios";
 
 export async function fetchWordPressContent() {
   const ENDPOINTS = [
-    "https://yit.enu.mybluehost.me/website_91a20f24/wp-json/wp/v2/posts?per_page=100",
-    "https://yit.enu.mybluehost.me/website_91a20f24/wp-json/wp/v2/pages?per_page=100",
-    "https://yit.enu.mybluehost.me/website_91a20f24/wp-json/wp/v2/events?per_page=100",   // if exists
-    "https://yit.enu.mybluehost.me/website_91a20f24/wp-json/wp/v2/service?per_page=100",  // if exists
+    // "https://yit.enu.mybluehost.me/website_91a20f24/wp-json/wp/v2/posts?per_page=100",
+    "https://paramsolutions.ca//wp-json/wp/v2/pages?per_page=100",
+    // "https://yit.enu.mybluehost.me/website_91a20f24/wp-json/wp/v2/pages?per_page=100",
+    // "https://yit.enu.mybluehost.me/website_91a20f24/wp-json/wp/v2/events?per_page=100",   // if exists
+    // "https://yit.enu.mybluehost.me/website_91a20f24/wp-json/wp/v2/service?per_page=100",  // if exists
   ];
 
   let allData = [];
@@ -113,5 +114,6 @@ export async function fetchWordPressContent() {
 
   return allData;
 }
+
 
 
